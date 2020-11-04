@@ -1,4 +1,4 @@
-# 다음 실시간 상위 뉴스 
+# Daum top-ranked new
 
 URL = 'https://news.daum.net/ranking/popular'
     
