@@ -1,0 +1,27 @@
+URL = 'https://news.daum.net/ranking/popular'
+    
+res = requests.get(URL)
+soup = BeautifulSoup(res.content, 'html.parser')
+data_title = soup.select('div.cont_aside > ol > li')
+
+list_final = list()
+for data in data_title :
+    order_final = data.select_one('em').get_text()
+    title_final = data.select_one('strong.tit_g').get_text().strip()
+    rink_final = data.select_one('a')['href']
+    list_final.append([order_final,title_final, rink_final])
+
+import openpyxl
+
+crawling_ex = openpyxl.Workbook()
+sheet_ex = crawling_ex.active
+sheet_ex.name = 'news_ranking'
+sheet_ex.column_dimensions['A'].width = 7
+sheet_ex.column_dimensions['B'].width = 60
+sheet_ex.column_dimensions['C'].width = 60
+
+for item in list_final :
+    sheet_ex.append(item)
+    
+crawling_ex.save('news2.xlsx')
+crawling_ex.close()
