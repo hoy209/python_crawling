@@ -1,0 +1,25 @@
+# 다음 실시간 상위 뉴스 
+
+URL = 'https://news.daum.net/ranking/popular'
+    
+res = requests.get(URL)
+soup = BeautifulSoup(res.content, 'html.parser')
+data_title = soup.select('ul > li > div > ol a')
+data_index = soup.select('ul > li > div > ol > li > em')
+title_final = list()
+for data in data_title : 
+    item = data.get_text().strip()
+    title_final.append(item)
+
+index_final = list()
+for data2 in data_index :
+    item2 = data2.get_text().strip()
+    index_final.append(item2)
+
+rink_final = list()
+for rink in data_title :
+    rink_final.append(rink['href'])
+    
+import pandas as pd
+table = pd.DataFrame({'order': index_final, 'title': title_final, 'rink': rink_final})
+table.to_csv('news.csv', encoding = 'utf-8-sig')
